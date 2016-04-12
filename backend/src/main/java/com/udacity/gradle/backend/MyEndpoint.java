@@ -28,6 +28,7 @@ public class MyEndpoint {
     public Jokes getJokes() {
         Jokes response = new Jokes();
         response.setData(jokeGenerator.getJoke());
+        System.out.println("endpoint: " + jokeGenerator.getJoke());
         return response;
     }
 

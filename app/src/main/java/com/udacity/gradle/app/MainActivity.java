@@ -11,8 +11,6 @@ import android.view.View;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.backend.jokesApi.JokesApi;
 import com.udacity.gradle.jokedisplay.JokeDisplayActivity;
 import com.udacity.gradle.jokesource.R;
@@ -21,6 +19,8 @@ import java.io.IOException;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private String endpoint_root_url = "http://10.0.3.2:8080/_ah/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,19 +58,12 @@ public class MainActivity extends ActionBarActivity {
     class EndPointsAsyncTask extends AsyncTask<Void, Void, String> {
 
         private JokesApi jokesApi = null;
-        private String root_url = "http://10.0.2.2:8080/_ah/api/";
         @Override
         protected String doInBackground(Void... params) {
             if(jokesApi == null){
                 JokesApi.Builder builder = new JokesApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
-                        .setRootUrl(root_url)
-                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                            @Override
-                            public void initialize(AbstractGoogleClientRequest<?> request) throws IOException {
-                                request.setDisableGZipContent(true);
-                            }
-                        });
+                        .setRootUrl("https://builditbigger-1279.appspot.com/_ah/api/");
                 jokesApi = builder.build();
             }
             try{
