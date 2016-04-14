@@ -1,5 +1,6 @@
 package com.udacity.gradle.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,12 +53,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void tellJoke(View view){
-       new EndPointsAsyncTask().execute();
+       new EndPointsAsyncTask(this).execute();
     }
 
-    class EndPointsAsyncTask extends AsyncTask<Void, Void, String> {
-
+    public class EndPointsAsyncTask extends AsyncTask<Void, Void, String> {
+        private Context mContext;
         private JokesApi jokesApi = null;
+
+        public EndPointsAsyncTask(Context context) {
+            this.mContext = context;
+        }
+
         @Override
         protected String doInBackground(Void... params) {
             if(jokesApi == null){
@@ -76,10 +82,11 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            if(s == null){
+            if(s == null || JokeDisplayActivity.JOKEDISPLAYACTIVITY_JOKE_INTENT_EXTRA == null){
                 return;
             }
-            startActivity(new Intent(MainActivity.this, JokeDisplayActivity.class)
+            Log.e("test", "string: " + JokeDisplayActivity.JOKEDISPLAYACTIVITY_JOKE_INTENT_EXTRA);
+            startActivity(new Intent(mContext, JokeDisplayActivity.class)
                     .putExtra(JokeDisplayActivity.JOKEDISPLAYACTIVITY_JOKE_INTENT_EXTRA, s));
         }
     }
